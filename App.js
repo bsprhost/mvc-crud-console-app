@@ -3,6 +3,7 @@ const yargs = require("yargs");
 
 const { Connection } = require("./DbConnections/MongolDbConn");
 const { addMovie, listMovies, deleteMovie, updateMovie } = require("./Controllers/MoviesController");
+const { addTVShow, listTVShows, deleteTVShow, updateTVShow } = require("./Controllers/TVShowsController");
 
 const app = async (yargsObj) => {
     try {
@@ -19,11 +20,24 @@ const app = async (yargsObj) => {
                 await deleteMovie({ title: yargsObj.title });
                 break;
 
+            case "AddTVShow":
+                await addTVShow({ title: yargsObj.title, star: yargsObj.star });
+                break;
+
+            case "UpdateTVShow":
+                await updateTVShow(yargsObj);
+                break;
+
+            case "DeleteTVShow":
+                await deleteTVShow({ title: yargsObj.title });
+                break;
+
             default:
                 console.log("Command Unknown");
 
         }
         console.log(await listMovies());
+        console.log(await listTVShows());
         await mongoose.disconnect();
     }catch (error) {
         console.log(error);
